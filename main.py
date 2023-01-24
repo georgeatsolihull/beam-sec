@@ -50,10 +50,10 @@ def update_display():
         display.show()
         
         if hasActivated:
-            if middle_text == "!! ALARM !!":
+            if middle_text == "!! ALARM TRIP !!":
                 middle_text = ""
             else:
-                middle_text = "!! ALARM !!"
+                middle_text = "!! ALARM TRIP !!"
     
 display_thread = threading.Thread(target=update_display)
 display_thread.start()
