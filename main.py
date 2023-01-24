@@ -37,7 +37,7 @@ def update_display():
     global bottom_text
     
     while True:
-        time.sleep(0.5)
+        time.sleep(0.2)
         
         first_char = top_text[0]
         top_text.pop(0)
