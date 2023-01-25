@@ -20,7 +20,7 @@ time.sleep(1)
 # Define the display and size (128x32)
 display = SSD1306_I2C(128, 32, i2c)
 
-top_text = list("Beam Sec v1.2.1 by George Hotten (and partially Thomas) | ")  # if updated, must be a list
+top_text = list("Beam Sec v1.2.2 by George Hotten (and partially Thomas R) | ")  # if updated, must be a list
 middle_text = ""
 bottom_text = ""
 
@@ -88,7 +88,7 @@ if not wlan.isconnected():
     time.sleep(3)
     machine.reset()
 else:
-    bottom_text = "Arming Beam..."
+    middle_text = "Arming Beam..."
 
 # Setup link to tello
 host = ''
