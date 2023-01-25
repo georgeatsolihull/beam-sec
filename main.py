@@ -5,7 +5,6 @@ from ssd1306 import SSD1306_I2C
 import network
 import threading
 import socket
-import sys
 
 hasActivated = False
 
@@ -33,7 +32,6 @@ display.show()
 
 def update_display():
     global top_text
-
     global middle_text
     global bottom_text
 
