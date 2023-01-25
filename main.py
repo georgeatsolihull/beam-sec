@@ -7,6 +7,8 @@ import threading
 import socket
 import sys
 
+hasActivated = False
+
 # DISPLAY
 
 # Set up I2C and the pins we're using for it
@@ -18,7 +20,7 @@ time.sleep(1)
 # Define the display and size (128x32)
 display = SSD1306_I2C(128, 32, i2c)
 
-top_text = list("Beam Sec v1.2 by George Hotten (and partially Thomas) | ")  # if updated, must be a list
+top_text = list("Beam Sec v1.2.1 by George Hotten (and partially Thomas) | ")  # if updated, must be a list
 middle_text = ""
 bottom_text = ""
 
@@ -55,6 +57,7 @@ def update_display():
                 middle_text = "!! ALARM TRIP !!"
 
 
+time.sleep(0.5)
 display_thread = threading.Thread(target=update_display)
 display_thread.start()
 
@@ -120,9 +123,6 @@ middle_text = "Armed."
 bottom_text = ""
 
 # Activates the alarm!
-hasActivated = False
-
-
 def activate():
     global hasActivated
     if hasActivated is True:
