@@ -19,7 +19,7 @@ time.sleep(1)
 # Define the display and size (128x32)
 display = SSD1306_I2C(128, 32, i2c)
 
-top_text = list("Beam Sec v1.2.2 by George Hotten (and partially Thomas R) | ")  # if updated, must be a list
+top_text = "Beam Sec v1.3 by George Hotten (and partially Thomas R) | "
 middle_text = ""
 bottom_text = ""
 
@@ -30,6 +30,19 @@ display.text(bottom_text, 0, 24)
 display.show()
 
 
+def scroll_variable(string):
+    if len(string) <= 16:  # Don't scroll if we don't need to!
+        return string
+
+    scroll_list = list(string)
+
+    first_char = scroll_list[0]
+    scroll_list.pop(0)
+    scroll_list.append(first_char)
+
+    return ''.join(scroll_list)
+
+
 def update_display():
     global top_text
     global middle_text
@@ -38,12 +51,12 @@ def update_display():
     while True:
         time.sleep(0.2)
 
-        first_char = top_text[0]
-        top_text.pop(0)
-        top_text.append(first_char)
+        top_text = scroll_variable(top_text)
+        middle_text = scroll_variable(middle_text)
+        bottom_text = scroll_variable(bottom_text)
 
         display.fill(0)
-        display.text(''.join(top_text), 0, 0)
+        display.text(top_text, 0, 0)
         display.text(middle_text, 0, 12)
         display.text(bottom_text, 0, 24)
         display.show()
@@ -82,7 +95,7 @@ middle_text = "WiFi: " + str(wlan.isconnected()) + " " + str(wlan.status())
 
 time.sleep(2)
 if not wlan.isconnected():
-    bottom_text = "Restarting in 3"
+    bottom_text = " Restarting in 3 seconds |"
     time.sleep(3)
     machine.reset()
 else:
@@ -119,6 +132,7 @@ tello_command("command")
 
 middle_text = "Armed."
 bottom_text = ""
+
 
 # Activates the alarm!
 def activate():
