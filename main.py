@@ -7,6 +7,7 @@ import threading
 import socket
 
 hasActivated = False
+enableCommandText = True
 
 # DISPLAY
 
@@ -19,7 +20,7 @@ time.sleep(1)
 # Define the display and size (128x32)
 display = SSD1306_I2C(128, 32, i2c)
 
-top_text = "Beam Sec v1.3 by George Hotten (and partially Thomas R) | "
+top_text = "Beam Sec v1.4 by George Hotten (and partially Thomas R) | "
 middle_text = ""
 bottom_text = ""
 
@@ -111,20 +112,27 @@ sock.bind(locaddr)
 
 
 def tello_command(c):
-    global bottom_text
-    cmd = c
-    # log the command recieved
-    print("--> %s" % c)
-    bottom_text = "> " + c
-    # send the command to the drone
-    c = c.encode()
-    sock.sendto(c, tello_address)
-    # wait for a response from the drone
-    data, server = sock.recvfrom(255)
-    data = data.decode().strip()
-    # log the response from the drone
-    bottom_text = "< " + str(data) + " (" + str(cmd) + ")"
-    print("<-- %s" % str(data))
+    try:
+        global bottom_text
+        cmd = c
+        # log the command received
+        print("--> %s" % c)
+        if enableCommandText:
+            bottom_text = "> " + c
+        # send the command to the drone
+        c = c.encode()
+        sock.sendto(c, tello_address)
+        # wait for a response from the drone
+        data, server = sock.recvfrom(255)
+        data = data.decode().strip()
+        # log the response from the drone
+        print("<-- %s" % str(data))
+        if enableCommandText:
+            bottom_text = "< " + str(data) + " (" + str(cmd) + ")"
+    except:
+        print("<-- internal err %s" % str(data))
+        if enableCommandText:
+            bottom_text = "< internal err (" + str(cmd) + ")"
 
 
 # Set the drone into SDK mode
@@ -137,6 +145,7 @@ bottom_text = ""
 # Activates the alarm!
 def activate():
     global hasActivated
+    global bottom_text
     if hasActivated is True:
         return
 
@@ -147,10 +156,16 @@ def activate():
     tello_command("takeoff")
     tello_command("up 75")
     tello_command("speed 100")
-    tello_command("flip f")
     tello_command("forward 300")
+    time.sleep(2)
+    tello_command("back 300")
     tello_command("land")
-    print("hi")
+    time.sleep(5)
+
+    bottom_text = " Resetting in 3 seconds | "
+
+    time.sleep(3)
+    machine.reset()
 
 
 # Waiting for beam break
