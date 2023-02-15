@@ -20,7 +20,7 @@ time.sleep(1)
 # Define the display and size (128x32)
 display = SSD1306_I2C(128, 32, i2c)
 
-top_text = "Beam Sec v1.4 by George Hotten (and partially Thomas R) | "
+top_text = "Beam Sec v1.4.1 by George Hotten (and partially Thomas R) | "
 middle_text = ""
 bottom_text = ""
 
@@ -159,6 +159,7 @@ def activate():
     tello_command("forward 300")
     time.sleep(2)
     tello_command("back 300")
+    time.sleep(1)
     tello_command("land")
     time.sleep(5)
 
